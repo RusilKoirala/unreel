@@ -23,6 +23,10 @@ html:not([data-unreel-allow~="ytHome"]) ytd-browse[page-subtype="home"] :is(ytd-
   display: none !important;
 }
 
+html:not([data-unreel-allow~="ytHome"]) ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer {
+  display: none !important;
+}
+
 /* YouTube suggested videos and end-of-video cards. Playlists stay visible. */
 html:not([data-unreel-allow~="ytRelated"]) :is(
   ytd-watch-flexy #related,
@@ -40,6 +44,9 @@ html:not([data-unreel-allow~="igExplore"]) a[href="/explore/"] { display: none !
 
 /* Instagram blocked pages. `main` is the only structure Instagram keeps stable. */
 html[data-unreel-page^="ig"] main { display: none !important; }
+
+/* Daily limit used up: the whole site gives way to the panel. */
+html[data-unreel-limit] body > :not(#unreel-panel) { display: none !important; }
 
 /* Panel shown in place of a blocked page */
 #unreel-panel {

@@ -1,4 +1,4 @@
-const { normalize, bandsForDay, scheduleApplies } = globalThis.Unreel;
+const { normalize, bandsForDay, scheduleApplies, lastSevenDays, dateKey, formatDuration, SITE_NAMES } = globalThis.Unreel;
 
 // Display order starts on Monday; values match Date.getDay().
 const DAYS = [
@@ -7,6 +7,8 @@ const DAYS = [
 ];
 
 let settings = normalize(null);
+let log = {};
+const LIMIT_CHOICES = [0, 15, 30, 45, 60, 90, 120, 180];
 const $ = (id) => document.getElementById(id);
 const save = () => chrome.storage.sync.set({ settings });
 const make = (tag, props = {}) => Object.assign(document.createElement(tag), props);
@@ -112,7 +114,110 @@ const renderWindows = () => {
   });
 };
 
+// Rounds the chart's top up to a friendly number of minutes.
+const niceMaxMinutes = (minutes) => {
+  for (const nice of [30, 60, 120, 240, 360, 480, 720, 960, 1440]) if (minutes <= nice) return nice;
+  return 1440;
+};
+
+const dayName = (date, style) => date.toLocaleDateString(undefined, { weekday: style });
+
+const renderTime = () => {
+  const now = new Date();
+  const days = lastSevenDays(log, now);
+  const today = days[6];
+  const counted = days.filter((d) => d.total > 0);
+  const average = counted.length ? days.reduce((sum, d) => sum + d.total, 0) / counted.length : 0;
+  $("stat-today").textContent = formatDuration(today.total);
+  $("stat-average").textContent = formatDuration(average);
+
+  const chart = $("chart");
+  chart.replaceChildren();
+  const top = niceMaxMinutes(Math.max(...days.map((d) => d.total)) / 60);
+  const plotHeight = 186;
+  for (const fraction of [0, 0.5, 1]) {
+    const line = make("div", { className: "grid" });
+    line.style.top = `${plotHeight * (1 - fraction)}px`;
+    line.append(make("span", { textContent: formatDuration(top * fraction * 60) }));
+    chart.append(line);
+  }
+  const bars = make("div", { className: "bars" });
+  for (const d of days) {
+    const col = make("div", { className: "bar-col", tabIndex: 0 });
+    if (d.today) col.dataset.today = "";
+    const label = `${dayName(d.date, "long")}: ${formatDuration(d.total)} in total, YouTube ${formatDuration(d.youtube)}, Instagram ${formatDuration(d.instagram)}`;
+    col.setAttribute("role", "img");
+    col.setAttribute("aria-label", label);
+    for (const site of ["instagram", "youtube"]) {
+      if (!d[site]) continue;
+      const seg = make("div", { className: "seg" });
+      seg.dataset.site = site;
+      seg.style.height = `${Math.max(2, (d[site] / 60 / top) * plotHeight)}px`;
+      col.append(seg);
+    }
+    col.append(make("span", { className: "day-label", textContent: dayName(d.date, "short") }));
+    const show = () => showTooltip(col, d);
+    col.addEventListener("pointerenter", show);
+    col.addEventListener("focus", show);
+    col.addEventListener("pointerleave", hideTooltip);
+    col.addEventListener("blur", hideTooltip);
+    bars.append(col);
+  }
+  chart.append(bars);
+  if (!counted.length) {
+    chart.append(make("div", { className: "empty", textContent: "Nothing counted yet. Your time shows up here after you use YouTube or Instagram." }));
+  }
+
+  const table = $("time-table");
+  table.replaceChildren();
+  const head = table.createTHead().insertRow();
+  for (const title of ["Day", "YouTube", "Instagram", "Total"]) head.append(make("th", { textContent: title }));
+  const body = table.createTBody();
+  for (const d of days) {
+    const row = body.insertRow();
+    for (const value of [dayName(d.date, "long"), formatDuration(d.youtube), formatDuration(d.instagram), formatDuration(d.total)]) {
+      row.insertCell().textContent = value;
+    }
+  }
+};
+
+const showTooltip = (col, d) => {
+  const tip = $("tooltip");
+  tip.replaceChildren(make("b", { textContent: `${dayName(d.date, "long")}: ${formatDuration(d.total)}` }));
+  tip.append(`YouTube ${formatDuration(d.youtube)}`, make("br"), `Instagram ${formatDuration(d.instagram)}`);
+  tip.hidden = false;
+  const area = $("time").getBoundingClientRect();
+  const box = col.getBoundingClientRect();
+  const left = box.left - area.left + box.width / 2 - tip.offsetWidth / 2;
+  tip.style.left = `${Math.max(0, Math.min(left, area.width - tip.offsetWidth))}px`;
+  tip.style.top = `${box.top - area.top + 4}px`;
+};
+
+const hideTooltip = () => { $("tooltip").hidden = true; };
+
+const limitLabel = (minutes) => (minutes ? `${formatDuration(minutes * 60)} a day` : "No limit");
+
+const renderLimits = () => {
+  const host = $("limits");
+  host.replaceChildren();
+  for (const [site, name] of Object.entries(SITE_NAMES)) {
+    const row = make("div", { className: "limit-row" });
+    const label = make("label", { textContent: name, htmlFor: `limit-${site}` });
+    const select = make("select", { id: `limit-${site}` });
+    const choices = LIMIT_CHOICES.includes(settings.limits[site]) ? LIMIT_CHOICES : [...LIMIT_CHOICES, settings.limits[site]];
+    for (const minutes of choices) select.append(new Option(limitLabel(minutes), minutes));
+    select.value = settings.limits[site];
+    select.addEventListener("change", () => {
+      settings.limits[site] = Number(select.value);
+      save();
+    });
+    row.append(label, select);
+    host.append(row);
+  }
+};
+
 const renderAll = () => {
+  renderLimits();
   renderWeek();
   renderEnable();
   renderWindows();
@@ -130,6 +235,12 @@ $("add").addEventListener("click", () => {
   changed();
 });
 
+$("clear").addEventListener("click", () => {
+  if (confirm("Clear all your screen time history? This also resets today's limits.")) {
+    chrome.storage.local.remove("time");
+  }
+});
+
 // Another window changed settings. Skip while this page has focus so typing and
 // open time pickers aren't rebuilt by our own saves.
 chrome.storage.onChanged.addListener((changes, area) => {
@@ -137,9 +248,19 @@ chrome.storage.onChanged.addListener((changes, area) => {
     settings = normalize(changes.settings.newValue);
     renderAll();
   }
+  if (area === "local" && "time" in changes) {
+    log = changes.time.newValue ?? {};
+    renderTime();
+  }
 });
 
 chrome.storage.sync.get("settings", ({ settings: stored }) => {
   settings = normalize(stored);
   renderAll();
 });
+
+chrome.storage.local.get("time", ({ time }) => {
+  log = time ?? {};
+  renderTime();
+});
+renderTime();

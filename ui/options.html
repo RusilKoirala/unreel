@@ -3,14 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Unreel block hours</title>
+  <title>Unreel settings</title>
   <link rel="stylesheet" href="shared.css">
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <main>
-    <h1>Block hours</h1>
-    <p class="muted lede">Unreel blocks all day by default. Set hours to block only when you need to focus, and leave the rest of the day alone.</p>
+    <h1>Your time</h1>
+
+    <section id="time">
+      <div class="stats">
+        <p><span id="stat-today" class="stat"></span> today</p>
+        <p class="muted"><span id="stat-average" class="stat-small"></span> a day this week</p>
+      </div>
+      <div class="legend">
+        <span><i class="swatch" data-site="youtube"></i>YouTube</span>
+        <span><i class="swatch" data-site="instagram"></i>Instagram</span>
+      </div>
+      <div id="chart"></div>
+      <div id="tooltip" role="status" hidden></div>
+      <details class="table-view">
+        <summary>Show as a table</summary>
+        <table id="time-table"></table>
+      </details>
+      <p class="muted fineprint">Counted while a site is on your screen and you're using it. This stays on this computer and is never sent anywhere. <button id="clear" class="link" type="button">Clear my history</button></p>
+    </section>
+
+    <section>
+      <h2>Daily limits</h2>
+      <p class="muted section-lede">When time runs out, the site is replaced with a reminder until midnight.</p>
+      <div id="limits"></div>
+    </section>
+
+    <h2 class="hours-title">Block hours</h2>
+    <p class="muted section-lede">Unreel blocks all day by default. Set hours to block only when you need to focus, and leave the rest of the day alone.</p>
 
     <section id="week" aria-label="Your week at a glance"></section>
 

@@ -21,6 +21,16 @@ await sw.evaluate(() => chrome.storage.sync.set({ settings: {
   ],
 } }));
 
+await sw.evaluate(() => {
+  const time = {};
+  const youtube = [38, 62, 24, 71, 45, 90, 32];
+  const instagram = [20, 15, 31, 12, 40, 25, 11];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(Date.now() - i * 864e5);
+    time[`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`] = { youtube: youtube[i] * 60, instagram: instagram[i] * 60 };
+  }
+  return chrome.storage.local.set({ time });
+});
 const p = await ctx.newPage();
 await p.goto(`chrome-extension://${id}/ui/options.html`);
 await p.waitForTimeout(400);

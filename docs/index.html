@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unreel: hide Shorts, Reels and endless feeds</title>
+<meta name="description" content="A free, open source Chrome extension that hides YouTube Shorts, Instagram Reels and endless feeds, tracks your screen time and sets daily limits. Install it in five steps.">
+<meta property="og:title" content="Unreel: keep the video, lose the scroll">
+<meta property="og:description" content="A free Chrome extension that hides YouTube Shorts, Instagram Reels and endless feeds.">
+<meta property="og:image" content="https://raw.githubusercontent.com/RusilKoirala/unreel/master/docs/social.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Shared artwork -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="ray"><line x1="120" y1="14" x2="120" y2="30" stroke="#ffc21a" stroke-width="13" stroke-linecap="round"/></g>
+    <symbol id="sun" viewBox="0 0 240 270">
+      <g stroke="#141c5c" stroke-width="9" stroke-linecap="round" fill="none">
+        <path d="M96 205 L92 248"/><path d="M144 205 L148 248"/>
+      </g>
+      <ellipse cx="84" cy="254" rx="20" ry="10" fill="#2a3bd6"/>
+      <ellipse cx="156" cy="254" rx="20" ry="10" fill="#2a3bd6"/>
+      <use href="#ray"/><use href="#ray" transform="rotate(45 120 120)"/><use href="#ray" transform="rotate(90 120 120)"/>
+      <use href="#ray" transform="rotate(135 120 120)"/><use href="#ray" transform="rotate(180 120 120)"/>
+      <use href="#ray" transform="rotate(225 120 120)"/><use href="#ray" transform="rotate(270 120 120)"/><use href="#ray" transform="rotate(315 120 120)"/>
+      <circle cx="120" cy="120" r="84" fill="#ffc21a"/>
+      <ellipse cx="92" cy="108" rx="10" ry="13" fill="#141c5c"/><circle cx="95" cy="103" r="3.6" fill="#fff"/>
+      <ellipse cx="148" cy="108" rx="10" ry="13" fill="#141c5c"/><circle cx="151" cy="103" r="3.6" fill="#fff"/>
+      <ellipse cx="70" cy="134" rx="14" ry="9" fill="#ff8fa8"/><ellipse cx="170" cy="134" rx="14" ry="9" fill="#ff8fa8"/>
+      <path d="M98 136 Q120 164 142 136" fill="none" stroke="#141c5c" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="cloud" viewBox="0 0 160 70">
+      <path d="M36 66a26 26 0 0 1-3-52 36 36 0 0 1 67-5 28 28 0 0 1 32 26 16 16 0 0 1-2 31z" fill="#fff"/>
+    </symbol>
+    <g id="film-frame">
+      <rect width="72" height="62" fill="#141c5c"/>
+      <rect x="5" y="8" width="7" height="9" rx="2" fill="#fff"/><rect x="5" y="27" width="7" height="9" rx="2" fill="#fff"/><rect x="5" y="46" width="7" height="9" rx="2" fill="#fff"/>
+      <rect x="60" y="8" width="7" height="9" rx="2" fill="#fff"/><rect x="60" y="27" width="7" height="9" rx="2" fill="#fff"/><rect x="60" y="46" width="7" height="9" rx="2" fill="#fff"/>
+      <rect x="17" y="6" width="38" height="50" rx="3" fill="#8fb3ff"/>
+      <path d="M30 22 L45 31 L30 40z" fill="#fff"/>
+    </g>
+  </defs>
+</svg>
+
+<header class="hero">
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="#top"><img src="favicon.svg" alt="" width="30" height="30">Unreel</a>
+    <div class="nav-links"><a href="#install">Install</a><a href="https://github.com/RusilKoirala/unreel">GitHub</a></div>
+  </nav>
+  <div class="hero-grid" id="top">
+    <div class="hero-copy">
+      <h1>Keep the video. Lose the scroll.</h1>
+      <p>Unreel is a free Chrome extension that hides YouTube Shorts, Instagram Reels and endless feeds, then shows you where your time actually goes.</p>
+      <div class="cta">
+        <a class="btn btn-main" id="hero-download" href="https://github.com/RusilKoirala/unreel/releases/latest/download/unreel.zip">Download for Chrome</a>
+        <a class="btn-text" href="#install">How to install</a>
+      </div>
+      <p class="cta-note">Free, about 70 KB. Works in Chrome on a computer.</p>
+    </div>
+    <svg class="hero-art" viewBox="0 0 760 580" role="img" aria-label="A smiling sun character snipping a film strip off a reel with scissors">
+      <use href="#cloud" x="10" y="30" width="170" height="74"/>
+      <use href="#cloud" x="330" y="10" width="120" height="52"/>
+      <!-- reel -->
+      <g>
+        <circle cx="630" cy="130" r="104" fill="#2a3bd6"/>
+        <circle cx="630" cy="130" r="20" fill="#dbe8ff"/>
+        <g fill="#dbe8ff">
+          <circle cx="630" cy="66" r="24"/><circle cx="691" cy="110" r="24"/><circle cx="668" cy="182" r="24"/><circle cx="592" cy="182" r="24"/><circle cx="569" cy="110" r="24"/>
+        </g>
+      </g>
+      <!-- strip still on the reel -->
+      <g transform="translate(662 206)"><use href="#film-frame"/><use href="#film-frame" y="62"/></g>
+      <!-- cut piece -->
+      <g class="fall" style="transform-origin:698px 400px">
+        <g transform="translate(662 332)"><use href="#film-frame"/><use href="#film-frame" y="62"/><use href="#film-frame" y="124"/></g>
+      </g>
+      <!-- character -->
+      <use href="#sun" x="170" y="170" width="330" height="372"/>
+      <path d="M450 330 Q500 356 546 334" fill="none" stroke="#141c5c" stroke-width="10" stroke-linecap="round"/>
+      <path d="M216 348 Q172 338 158 296" fill="none" stroke="#141c5c" stroke-width="10" stroke-linecap="round"/>
+      <!-- scissors -->
+      <g transform="translate(612 332)" stroke-linecap="round">
+        <g class="blade-a">
+          <path d="M0 0 L88 -10 L0 8z" fill="#ff5d7e"/>
+          <circle cx="-54" cy="24" r="20" fill="none" stroke="#ff5d7e" stroke-width="10"/>
+          <path d="M0 4 L-38 15" stroke="#ff5d7e" stroke-width="10"/>
+        </g>
+        <g class="blade-b">
+          <path d="M0 0 L88 10 L0 -8z" fill="#e8406a"/>
+          <circle cx="-54" cy="-24" r="20" fill="none" stroke="#e8406a" stroke-width="10"/>
+          <path d="M0 -4 L-38 -15" stroke="#e8406a" stroke-width="10"/>
+        </g>
+        <circle r="6" fill="#141c5c"/>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<main>
+  <section class="try" id="try">
+    <div class="wrap try-grid">
+      <div class="try-copy">
+        <h2>Flip the switch and watch the scroll go</h2>
+        <p>This is a drawing of a video site. Try it.</p>
+        <label class="big-switch">
+          <input id="demo-switch" type="checkbox" role="switch" checked>
+          <span aria-hidden="true"></span>
+          <strong id="demo-label">Unreel is on</strong>
+        </label>
+        <div class="hides">
+          <div><h3>On YouTube</h3><p>Shorts, the home feed, suggested videos, autoplay and, if you like, comments.</p></div>
+          <div><h3>On Instagram</h3><p>Reels, Explore, the home feed and stories.</p></div>
+          <div><h3>Still there</h3><p>Search, subscriptions, playlists, messages and profiles.</p></div>
+        </div>
+      </div>
+      <div class="browser" id="demo" data-on="true" aria-hidden="true">
+        <div class="bar"><i></i><i></i><i></i><b></b></div>
+        <div class="page">
+          <div class="search"><span>Search</span></div>
+          <div class="noise">
+            <p class="row-label">Shorts</p>
+            <div class="shorts"><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="row-label">Recommended for you</p>
+            <div class="feed"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="calm">
+            <svg viewBox="0 0 240 270"><use href="#sun"/></svg>
+            <p><strong>Home feed hidden</strong>Search for what you came to watch.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="time" id="time">
+    <div class="wrap time-grid">
+      <svg class="time-art" viewBox="-16 0 476 340" role="img" aria-label="The sun character standing beside a week of bars, holding a stopwatch">
+        <g>
+          <line x1="150" y1="290" x2="450" y2="290" stroke="#c6d3f2" stroke-width="4" stroke-linecap="round"/>
+          <rect x="166" y="170" width="28" height="118" rx="6" fill="#2a3bd6"/><rect x="166" y="132" width="28" height="34" rx="6" fill="#ff5d7e"/>
+          <rect x="208" y="210" width="28" height="78" rx="6" fill="#2a3bd6"/><rect x="208" y="186" width="28" height="20" rx="6" fill="#ff5d7e"/>
+          <rect x="250" y="120" width="28" height="168" rx="6" fill="#2a3bd6"/><rect x="250" y="76" width="28" height="40" rx="6" fill="#ff5d7e"/>
+          <rect x="292" y="196" width="28" height="92" rx="6" fill="#2a3bd6"/><rect x="292" y="160" width="28" height="32" rx="6" fill="#ff5d7e"/>
+          <rect x="334" y="228" width="28" height="60" rx="6" fill="#2a3bd6"/><rect x="334" y="206" width="28" height="18" rx="6" fill="#ff5d7e"/>
+          <rect x="376" y="244" width="28" height="44" rx="6" fill="#2a3bd6"/><rect x="376" y="226" width="28" height="14" rx="6" fill="#ff5d7e"/>
+          <rect x="418" y="258" width="28" height="30" rx="6" fill="#2a3bd6"/><rect x="418" y="244" width="28" height="10" rx="6" fill="#ff5d7e"/>
+        </g>
+        <use href="#sun" x="0" y="130" width="170" height="191"/>
+        <path d="M34 208 Q2 196 12 160" fill="none" stroke="#141c5c" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="16" cy="136" r="22" fill="#fff" stroke="#141c5c" stroke-width="6"/>
+        <path d="M16 136 V122 M16 136 L26 142" stroke="#141c5c" stroke-width="5" stroke-linecap="round"/>
+        <rect x="11" y="106" width="10" height="8" rx="2" fill="#141c5c"/>
+      </svg>
+      <div>
+        <h2>See where your time goes</h2>
+        <p class="time-lede">Unreel counts your time on YouTube and Instagram, and only on this computer. Nothing is ever sent anywhere.</p>
+        <div class="hides">
+          <div><h3>Screen time</h3><p>See today's total and your last seven days in one chart.</p></div>
+          <div><h3>Daily limits</h3><p>Give each site a budget. When it's used, the site makes way for a reminder until midnight.</p></div>
+          <div><h3>Block hours</h3><p>Block during class or work, and leave your evenings alone.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="wrap">
+      <h2>Install it in four easy steps</h2>
+      <p class="install-lede">Unreel isn't on the Chrome Web Store yet, so you add it yourself. It takes about two minutes.</p>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="step-text">
+            <h3>Download Unreel</h3>
+            <p>You'll get one small file called unreel.zip.</p>
+            <a class="btn btn-main" href="https://github.com/RusilKoirala/unreel/releases/latest/download/unreel.zip">Download unreel.zip</a>
+          </div>
+          <svg class="step-art" viewBox="0 0 360 260" aria-hidden="true">
+            <use href="#cloud" x="20" y="10" width="110" height="48"/>
+            <path d="M268 24 V92 M244 70 L268 94 L292 70" fill="none" stroke="#2a3bd6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="222" y="116" width="92" height="104" rx="12" fill="#fff" stroke="#141c5c" stroke-width="6"/>
+            <path d="M268 116 v50" stroke="#141c5c" stroke-width="6" stroke-dasharray="7 7"/>
+            <rect x="256" y="168" width="24" height="26" rx="5" fill="#ffc21a" stroke="#141c5c" stroke-width="5"/>
+            <use href="#sun" x="50" y="56" width="165" height="186"/>
+            <path d="M178 158 Q202 170 224 166" fill="none" stroke="#141c5c" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </li>
+
+        <li class="step" id="unzip">
+          <div class="step-text">
+            <h3>Unzip it</h3>
+            <p><strong>Mac:</strong> double-click the zip.<br><strong>Windows:</strong> right-click it, then choose Extract All.</p>
+            <p>Move the new <strong>unreel</strong> folder to Documents and keep it there. Unreel stops working if the folder is moved or deleted.</p>
+          </div>
+          <svg class="step-art" viewBox="0 0 360 260" aria-hidden="true">
+            <path d="M150 92 a14 14 0 0 1 14-14 h46 l20 22 h86 a14 14 0 0 1 14 14 v104 a14 14 0 0 1-14 14 H164 a14 14 0 0 1-14-14z" fill="#8fb3ff" stroke="#141c5c" stroke-width="6" stroke-linejoin="round"/>
+            <text x="240" y="178" text-anchor="middle" class="art-label">unreel</text>
+            <use href="#sun" x="16" y="72" width="150" height="169"/>
+            <path d="M126 156 Q144 150 156 136" fill="none" stroke="#141c5c" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </li>
+
+        <li class="step">
+          <div class="step-text">
+            <h3>Open Chrome's extensions page</h3>
+            <p>Copy this, paste it into the address bar and press Enter:</p>
+            <p class="copy-row"><code>chrome://extensions</code><button class="copy" type="button" data-copy="chrome://extensions">Copy</button></p>
+            <p>Then turn on <strong>Developer mode</strong> at the top right.</p>
+          </div>
+          <svg class="step-art" viewBox="0 0 360 260" aria-hidden="true">
+            <rect x="14" y="30" width="332" height="150" rx="14" fill="#fff" stroke="#141c5c" stroke-width="6"/>
+            <path d="M14 76 H346" stroke="#c6d3f2" stroke-width="4"/>
+            <text x="34" y="60" class="art-small">Extensions</text>
+            <text x="128" y="60" class="art-small">Developer mode</text>
+            <rect x="288" y="42" width="38" height="22" rx="11" fill="#2a3bd6"/><circle cx="315" cy="53" r="8" fill="#ffc21a"/>
+            <circle cx="307" cy="53" r="27" fill="none" stroke="#ff5d7e" stroke-width="5"/>
+            <rect x="34" y="96" width="130" height="62" rx="8" fill="#e8f0ff"/><rect x="186" y="96" width="130" height="62" rx="8" fill="#e8f0ff"/>
+            <use href="#sun" x="30" y="108" width="125" height="141"/>
+            <path d="M138 176 Q240 176 296 86" fill="none" stroke="#141c5c" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </li>
+
+        <li class="step">
+          <div class="step-text">
+            <h3>Add the folder</h3>
+            <p>Click <strong>Load unpacked</strong> at the top left, then choose your <strong>unreel</strong> folder. Unreel is now on.</p>
+          </div>
+          <svg class="step-art" viewBox="0 0 360 260" aria-hidden="true">
+            <rect x="14" y="30" width="332" height="150" rx="14" fill="#fff" stroke="#141c5c" stroke-width="6"/>
+            <rect x="28" y="50" width="146" height="38" rx="19" fill="#2a3bd6"/>
+            <text x="101" y="75" text-anchor="middle" class="art-small art-on-dark">Load unpacked</text>
+            <rect x="184" y="50" width="146" height="38" rx="19" fill="#e8f0ff"/>
+            <text x="257" y="75" text-anchor="middle" class="art-small art-quiet">Pack extension</text>
+            <path d="M210 118 a8 8 0 0 1 8-8 h28 l12 13 h50 a8 8 0 0 1 8 8 v60 a8 8 0 0 1-8 8 H218 a8 8 0 0 1-8-8z" fill="#8fb3ff" stroke="#141c5c" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M206 142 Q150 120 110 96" fill="none" stroke="#ff5d7e" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 12"/>
+            <use href="#sun" x="30" y="104" width="125" height="141"/>
+            <path d="M134 170 Q176 176 208 168" fill="none" stroke="#141c5c" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="done">
+    <div class="wrap done-grid">
+      <svg viewBox="0 0 420 300" role="img" aria-label="The sun character relaxing in sunglasses">
+        <use href="#sun" x="110" y="10" width="220" height="248"/>
+        <g fill="#141c5c">
+          <rect x="172" y="88" width="42" height="28" rx="11"/><rect x="226" y="88" width="42" height="28" rx="11"/>
+          <rect x="210" y="94" width="20" height="6"/>
+        </g>
+        <path d="M112 112 Q60 98 74 52" fill="none" stroke="#141c5c" stroke-width="8" stroke-linecap="round"/>
+        <path d="M328 112 Q384 98 368 52" fill="none" stroke="#141c5c" stroke-width="8" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <h2>You're done</h2>
+        <p>Open YouTube and the Shorts are gone.</p>
+        <p class="done-tip">To keep Unreel handy, click the puzzle piece next to the address bar, then the pin beside Unreel. Click its icon any time to see your screen time, change what's hidden or set limits.</p>
+        <a class="btn btn-sun" href="https://www.youtube.com">Open YouTube</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="help" id="help">
+    <div class="wrap narrow">
+      <h2>If something goes wrong</h2>
+      <details><summary>Chrome says "Manifest file is missing"</summary><p>You chose the wrong folder. Open the unreel folder and check that <code class="inline">manifest.json</code> sits directly inside it, then choose that exact folder. If you see the file called <code class="inline">unreel.zip</code>, unzip it first.</p></details>
+      <details><summary>Developer mode is greyed out or missing</summary><p>Your school or workplace probably manages this browser, and only its admin can allow this. Try Unreel on a personal Chrome profile or your own computer.</p></details>
+      <details><summary>Unreel disappeared or shows an error</summary><p>The folder was probably moved or deleted. Put it back in the same place and click the reload icon on Unreel's card. If you load it from a new place instead, Chrome treats it as a new extension, so you'll need to set your choices and hours again.</p></details>
+      <details><summary>A hidden thing has come back</summary><p>YouTube and Instagram change their pages often, which can break what Unreel hides. Check for a newer version, or <a href="https://github.com/RusilKoirala/unreel/issues">report it on GitHub</a>.</p></details>
+      <details><summary>Why is my screen time different from my phone's?</summary><p>Unreel only counts YouTube and Instagram in this Chrome, while they're on your screen. It stops counting after a minute with no activity, unless a video is playing.</p></details>
+      <details><summary>How do I update Unreel?</summary><p>Chrome can't update it for you while it's installed this way. Download the new zip, replace everything in your unreel folder with the new files, then click the reload icon on Unreel's card in <code class="inline">chrome://extensions</code>. <a href="https://github.com/RusilKoirala/unreel/releases">See all versions</a>.</p></details>
+      <details><summary>Is it safe to install this way?</summary><p>Developer mode lets Chrome run extensions that didn't come from its store, so only load ones you trust. Unreel has no account, runs only on YouTube and Instagram, and sends nothing anywhere, including your screen time. <a href="https://github.com/RusilKoirala/unreel">All the code is public</a>, and so is the <a href="https://github.com/RusilKoirala/unreel/blob/master/store/privacy.md">privacy policy</a>.</p></details>
+      <details><summary>How do I remove it?</summary><p>Click Remove on Unreel's card in <code class="inline">chrome://extensions</code>, then delete the folder.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Unreel is free and open source under the <a href="https://github.com/RusilKoirala/unreel/blob/master/LICENSE">MIT license</a>. It's an independent project and isn't affiliated with YouTube or Instagram.</p>
+    <a href="https://github.com/RusilKoirala/unreel">View the code on GitHub</a>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

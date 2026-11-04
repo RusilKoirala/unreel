@@ -2,7 +2,7 @@
 
 Last updated: November 4, 2026
 
-Unreel hides parts of YouTube and Instagram in your browser. It has no accounts, analytics, ads or tracking, and nothing it handles leaves your browser. The source code is public, so you can check this yourself: https://github.com/RusilKoirala/helius
+Unreel hides parts of YouTube and Instagram in your browser. It has no accounts, analytics, ads or tracking, and nothing it handles leaves your browser. The source code is public, so you can check this yourself: REPO_URL
 
 ## What Unreel stores
 
@@ -18,4 +18,4 @@ Uninstalling Unreel removes the data it stored in your browser.
 
 ## Contact
 
-Open an issue at https://github.com/RusilKoirala/helius
+Open an issue at 
