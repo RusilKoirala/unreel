@@ -1,0 +1,17 @@
+{
+  "name": "unreel",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.cjs",
+    "test:live": "node scripts/e2e.mjs",
+    "build": "node scripts/build.mjs",
+    "assets": "node scripts/assets.mjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/bricolage-grotesque": "5.2.5",
+    "playwright": "1.64.1"
+  }
+}

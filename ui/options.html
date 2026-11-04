@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unreel block hours</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <h1>Block hours</h1>
+    <p class="muted lede">Unreel blocks all day by default. Set hours to block only when you need to focus, and leave the rest of the day alone.</p>
+
+    <section id="week" aria-label="Your week at a glance"></section>
+
+    <div class="enable">
+      <div>
+        <label for="enabled"><strong>Block only during these hours</strong></label>
+        <p id="enable-note" class="muted"></p>
+      </div>
+      <span class="switch"><input id="enabled" type="checkbox" role="switch"><span></span></span>
+    </div>
+
+    <section id="windows"></section>
+    <p class="add">
+      <button id="add" class="secondary" type="button">Add hours</button>
+    </p>
+
+  </main>
+  <script src="../src/core.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

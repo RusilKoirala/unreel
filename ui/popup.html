@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Unreel</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header id="status" data-state="on">
+    <div class="horizon" aria-hidden="true"><div class="disc"></div></div>
+    <div>
+      <h1 id="status-title">Blocking is on</h1>
+      <p id="status-detail" class="muted"></p>
+    </div>
+  </header>
+  <main id="rules"></main>
+  <footer>
+    <button id="pause" class="secondary" type="button"></button>
+    <button id="hours" class="link" type="button"></button>
+  </footer>
+  <script src="../src/core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

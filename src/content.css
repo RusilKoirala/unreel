@@ -1,0 +1,84 @@
+/* Everything is hidden by default and un-hidden when the content script marks a
+   rule as allowed, so blocked content never flashes during page load. */
+
+/* YouTube Shorts */
+html:not([data-unreel-allow~="ytShorts"]) :is(
+  ytd-reel-shelf-renderer,
+  ytd-rich-shelf-renderer[is-shorts],
+  ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+  grid-shelf-view-model:has(ytm-shorts-lockup-view-model, ytm-shorts-lockup-view-model-v2),
+  ytm-shorts-lockup-view-model,
+  ytm-shorts-lockup-view-model-v2,
+  ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+  ytd-video-renderer:has(a[href^="/shorts/"]),
+  ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+  ytd-compact-video-renderer:has(a[href^="/shorts/"]),
+  ytd-guide-entry-renderer:has(a[title="Shorts"], a[title="ショート"], a[title="쇼츠"]),
+  ytd-mini-guide-entry-renderer:is([aria-label="Shorts"], [aria-label="ショート"], [aria-label="쇼츠"]),
+  yt-tab-shape[tab-title="Shorts"]
+) { display: none !important; }
+
+/* YouTube home feed */
+html:not([data-unreel-allow~="ytHome"]) ytd-browse[page-subtype="home"] :is(ytd-rich-grid-renderer, #primary) {
+  display: none !important;
+}
+
+/* YouTube suggested videos and end-of-video cards. Playlists stay visible. */
+html:not([data-unreel-allow~="ytRelated"]) :is(
+  ytd-watch-flexy #related,
+  ytd-watch-next-secondary-results-renderer,
+  .ytp-endscreen-content,
+  .ytp-ce-element
+) { display: none !important; }
+
+/* YouTube comments */
+html:not([data-unreel-allow~="ytComments"]) ytd-comments#comments { display: none !important; }
+
+/* Instagram navigation links */
+html:not([data-unreel-allow~="igReels"]) a[href="/reels/"],
+html:not([data-unreel-allow~="igExplore"]) a[href="/explore/"] { display: none !important; }
+
+/* Instagram blocked pages. `main` is the only structure Instagram keeps stable. */
+html[data-unreel-page^="ig"] main { display: none !important; }
+
+/* Panel shown in place of a blocked page */
+#unreel-panel {
+  all: initial;
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(380px, calc(100vw - 32px));
+  box-sizing: border-box;
+  text-align: center;
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #141c5c;
+}
+#unreel-panel .sun {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #ffc21a;
+}
+#unreel-panel h2 { margin: 0 0 6px; font: inherit; font-size: 22px; font-weight: 700; color: inherit; }
+#unreel-panel p { margin: 0 0 16px; font: inherit; color: inherit; opacity: 0.75; }
+#unreel-panel a, #unreel-panel button {
+  all: unset;
+  display: inline-block;
+  margin: 0 8px;
+  font: inherit;
+  font-size: 14px;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+#unreel-panel a:focus-visible, #unreel-panel button:focus-visible {
+  outline: 2px solid #2a3bd6;
+  outline-offset: 3px;
+}
+html[dark] #unreel-panel { color: #eef2ff; }
+html[data-unreel-dark] #unreel-panel { color: #eef2ff; }

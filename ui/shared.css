@@ -1,0 +1,80 @@
+@font-face {
+  font-family: "Bricolage";
+  src: url("fonts/bricolage.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+:root {
+  color-scheme: light dark;
+  --sky: #e8f0ff;
+  --paper: #ffffff;
+  --ink: #141c5c;
+  --muted: #535c92;
+  --line: #c6d3f2;
+  --sun: #ffc21a;
+  --action: #2a3bd6;
+  --on-action: #ffffff;
+  --error: #b3142e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sky: #0e1442;
+    --paper: #171f5c;
+    --ink: #eef2ff;
+    --muted: #a5afdd;
+    --line: #323c80;
+    --action: #9daaff;
+    --on-action: #0e1442;
+    --error: #ff9aa9;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--sky);
+  color: var(--ink);
+  font: 15px/1.45 "Bricolage", system-ui, sans-serif;
+}
+h1, h2, p { margin: 0; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.muted { color: var(--muted); }
+.link {
+  all: unset;
+  color: var(--action);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.link:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.primary, .secondary {
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--action);
+}
+.primary { background: var(--action); color: var(--on-action); }
+.secondary { background: transparent; color: var(--action); }
+.primary:disabled, .secondary:disabled { opacity: 0.5; cursor: default; }
+
+/* Switch: the sun sits on a cobalt sky when on, a pale outline when off */
+.switch { position: relative; display: inline-block; width: 44px; height: 26px; flex: none; }
+.switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.switch input:disabled { cursor: not-allowed; }
+.switch span {
+  position: absolute; inset: 0; border-radius: 999px;
+  background: var(--line); pointer-events: none; transition: background 0.15s;
+}
+.switch span::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--paper); transition: transform 0.15s, background 0.15s;
+}
+.switch input:checked + span { background: var(--action); }
+.switch input:checked + span::after { transform: translateX(18px); background: var(--sun); }
+.switch input:focus-visible + span { outline: 2px solid var(--action); outline-offset: 2px; }
+.switch input:disabled + span { opacity: 0.5; }
+@media (prefers-reduced-motion: reduce) {
+  .switch span, .switch span::after { transition: none; }
+}

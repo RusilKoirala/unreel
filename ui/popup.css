@@ -1,0 +1,32 @@
+body { width: 340px; }
+#status {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 18px 16px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+#status h1 { font-size: 20px; font-weight: 700; line-height: 1.2; }
+#status p { font-size: 13px; min-height: 19px; }
+/* The sun's height is the status: up while blocking, on the horizon otherwise. */
+.horizon {
+  position: relative; flex: none; width: 48px; height: 48px;
+  overflow: hidden; border-bottom: 2px solid transparent;
+}
+.disc {
+  position: absolute; left: 4px; top: 4px; width: 40px; height: 40px;
+  border-radius: 50%; background: var(--sun); transition: transform 0.3s;
+}
+#status[data-state="off"] .horizon, #status[data-state="paused"] .horizon { border-bottom-color: var(--ink); }
+#status[data-state="off"] .disc, #status[data-state="paused"] .disc { transform: translateY(24px); }
+#status[data-state="paused"] .disc { background: var(--line); }
+@media (prefers-reduced-motion: reduce) { .disc { transition: none; } }
+
+#rules { padding: 6px 18px 2px; }
+#rules h2 { font-size: 14px; font-weight: 700; margin: 12px 0 2px; }
+.rule { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; cursor: pointer; }
+footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 18px 16px;
+  font-size: 14px;
+}
+#pause { padding: 7px 14px; }
