@@ -31,7 +31,7 @@ Pause when you really need to. A pause lasts five minutes and starts after a ten
 
 Block hours: block during class or work and leave your evenings alone. Set different hours for different days, including overnight.
 
-Free and open source: no account, no analytics, no tracking, no paid tier. Unreel runs in your browser and never records what you watch. Read the code at REPO_URL
+Free and open source: no account, no analytics, no tracking, no paid tier. Unreel runs in your browser and never records what you watch. Read the code at https://github.com/RusilKoirala/helius
 
 Unreel is an independent tool and isn't affiliated with YouTube or Instagram.
 
@@ -53,4 +53,4 @@ No. All code ships in the package.
 - store/images/promo-small.png (440x280)
 
 ## Privacy policy URL
-Host store/privacy.md publicly and paste the link here.
+https://github.com/RusilKoirala/helius/blob/master/store/privacy.md
